@@ -10,6 +10,14 @@
 
 @implementation TNKlipboxDocument
 
+- (void)dealloc
+{
+  // release any reserved memory
+  [klipboxes release];klipboxes=nil;
+  // super...
+  [super dealloc];
+}
+
 - (id)init
 {
     self = [super init];
@@ -24,43 +32,99 @@
 
 - (NSString *)windowNibName
 {
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
-    return @"TNKlipboxDocument";
+  return @"TNKlipboxDocument";
 }
 
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController
 {
-    [super windowControllerDidLoadNib:aController];
-    // Add any code here that needs to be executed once the windowController has loaded the document's window.
+  [super windowControllerDidLoadNib:aController];
+  // Add any code here that needs to be executed once the windowController has loaded the document's window.
+  [[aController window] setFrame:[self frame] display:YES];
+  [[aController window] setAlphaValue:[self transparency]];
 }
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
 {
-    // Insert code here to write your document to data of the specified type. If the given outError != NULL, ensure that you set *outError when returning nil.
-
-    // You can also choose to override -fileWrapperOfType:error:, -writeToURL:ofType:error:, or -writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-
-    // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
-
-    if ( outError != NULL ) {
-		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
-	}
-	return nil;
+  @try {
+    // attempt to archive our dictionary
+    if([typeName isEqualToString:TNKlipboxDocumentTypeKey]) {
+      // create a temporary dictionary
+      NSDictionary *temp = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSNumber numberWithFloat:x],
+                            TNKlipboxDocumentOriginXKey,
+                            [NSNumber numberWithFloat:y],
+                            TNKlipboxDocumentOriginYKey,
+                            [NSNumber numberWithFloat:w],
+                            TNKlipboxDocumentRectangleWidthKey,
+                            [NSNumber numberWithFloat:h],
+                            TNKlipboxDocumentRectangleHeightKey,
+                            nil];
+      // create archived version of plist
+      NSData *theData = [NSArchiver archivedDataWithRootObject:temp];
+      return theData;
+    }
+  }
+  @catch (NSException * e) {
+    ELog(@"Error preparing data for archiving: %@",e);
+  }
+  if ( outError != NULL ) {
+    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+    return nil;
+  }
+  return nil;
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
-    // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
-
-    // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead. 
-    
-    // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
-    
-    if ( outError != NULL ) {
-		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+  // create a dictionary out of the file
+  if([typeName isEqualToString:TNKlipboxDocumentTypeKey])
+  {
+    NSDictionary *myPlist = [NSUnarchiver unarchiveObjectWithData:data];
+    [self getInfoFromPlist:myPlist error:outError];
+  }
+  if ( outError != NULL ) {
+    *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
-    return YES;
+  return YES;
 }
+
+#pragma mark Custom Functions
+/**
+ Extract data from plist... record error if any
+ */
+- (void)getInfoFromPlist:(NSDictionary *)aPlist error:(NSError **)error
+{
+  // set geometry values
+  x = [[aPlist valueForKey:TNKlipboxDocumentOriginXKey] floatValue];
+  y = [[aPlist valueForKey:TNKlipboxDocumentOriginYKey] floatValue];
+  w = [[aPlist valueForKey:TNKlipboxDocumentRectangleWidthKey] floatValue];  
+  h = [[aPlist valueForKey:TNKlipboxDocumentRectangleHeightKey] floatValue];
+  // grab klipbox array
+  klipboxes = [[NSMutableArray arrayWithArray:[aPlist valueForKey:TNKlipboxDocumentKlipboxesKey]] retain];
+}
+/** 
+ Needs to return are target frame... this may be dynamic in the future
+ */
+- (NSRect)frame
+{
+  return NSMakeRect(x,y,w,h);
+}
+
+- (float)transparency
+{
+  return transparency;
+}
+
+#pragma mark Key Values
+NSString * const TNKlipboxDocumentTypeKey = @"TNKlipboxDocument";
+NSString * const TNKlipboxDocumentNameKey = @"TNKlipboxDocumentName";
+NSString * const TNKlipboxDocumentOriginXKey = @"TNKlipboxDocumentOriginX";
+NSString * const TNKlipboxDocumentOriginYKey = @"TNKlipboxDocumentOriginY";
+NSString * const TNKlipboxDocumentRectangleWidthKey = @"TNKlipboxDocumentRectangleWidth";
+NSString * const TNKlipboxDocumentRectangleHeightKey = @"TNKlipboxDocumentRectangleHeight";
+NSString * const TNKlipboxDocumentKlipboxesKey = @"TNKlipboxDocumentKlipboxes";
+
+#pragma mark Temporary Preference Keys
+float const transparency = 0.5;
 
 @end
