@@ -1,0 +1,13 @@
+# last mod 20100803 (tn)
+
+# xcode noise
+build/*
+klipbox.xcodeproj/*
+# but include the project file
+!klipbox.xcodeproj/project.pbxproj
+
+# osx noise
+.DS_Store
+._*
+profile
+
