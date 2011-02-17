@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TNKlipboxDocument : NSDocument <NSCoding>
+@interface TNKlipboxDocument : NSDocument
 {
   float x;                           // x of origin
   float y;                           // y of origin
@@ -26,7 +26,7 @@
 - (void)recordNewWindowSize: (NSNotification *)aNote;
 
 #pragma mark Document Reading
-- (id)initWithCoder: (NSCoder *)aCoder;
+- (void)decodeWithCoder: (NSCoder *)aCoder;
 - (BOOL)readFromData: (NSData*)data ofType:(NSString *)typeName error:(NSError **)outError;
 
 #pragma mark Document Writing

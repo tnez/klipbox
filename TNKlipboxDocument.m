@@ -42,6 +42,7 @@
   [super windowControllerDidLoadNib:aController];
   // Add any code here that needs to be executed once the windowController has loaded the document's window.
   domainWindow = [aController window];
+  DLog(@"I am going to set the frame (x:%f,y:%f,w:%f,h:%f)",x,y,w,h);
   [domainWindow setFrame:[self frame] display:YES];
   [domainWindow setAlphaValue:[self transparency]];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recordNewWindowSize:) name:NSWindowDidResizeNotification object:domainWindow];
@@ -58,8 +59,6 @@
     w = 650;
     h = 400;
     klipboxes = [[NSMutableArray alloc] initWithCapacity:5];
-    [klipboxes addObject:@"one"];
-    [klipboxes addObject:@"two"];
   }
   return self;
 }
@@ -77,34 +76,24 @@
 }
 
 #pragma mark Document Reading
-
-/**
- Extract data from plist... record error if any
- */
-- (id)initWithCoder: (NSCoder *)aCoder
+- (void)decodeWithCoder: (NSCoder *)aCoder
 {
-  if(self=[super init])
-  {
-    x = [aCoder decodeFloatForKey:TNKlipboxDocumentOriginXKey];
-    y = [aCoder decodeFloatForKey:TNKlipboxDocumentOriginYKey];
-    w = [aCoder decodeFloatForKey:TNKlipboxDocumentRectangleWidthKey];
-    h = [aCoder decodeFloatForKey:TNKlipboxDocumentRectangleHeightKey];
-    klipboxes = [aCoder decodeObjectForKey:TNKlipboxDocumentKlipboxesKey];
-    return self;
-  }
-  // else... could not decode
-  ELog(@"Could not decode document");
-  return nil;
+  DLog(@"My Coder: %@",aCoder);
+  x = [aCoder decodeFloatForKey:TNKlipboxDocumentOriginXKey];
+  y = [aCoder decodeFloatForKey:TNKlipboxDocumentOriginYKey];
+  w = [aCoder decodeFloatForKey:TNKlipboxDocumentRectangleWidthKey];
+  h = [aCoder decodeFloatForKey:TNKlipboxDocumentRectangleHeightKey];
+  klipboxes = [aCoder decodeObjectForKey:TNKlipboxDocumentKlipboxesKey];
 }
 
 - (BOOL)readFromData: (NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
   DLog(@"Type: %@ Data: %@",typeName,data);
-  id didRead = nil;
+  BOOL didRead = YES; // TODO: error checking
   // create a dictionary out of the file
   if([typeName isEqualToString:TNKlipboxDocumentTypeKey])
   {
-    didRead = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self decodeWithCoder:[[NSKeyedUnarchiver alloc] initForReadingWithData:data]];
   }
   if ( !didRead && outError ) {
     *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
@@ -116,18 +105,21 @@
 #pragma mark Document Writing
 - (NSData *)dataOfType: (NSString *)typeName error:(NSError **)outError
 {
+  NSData *outData = nil;
   DLog(@"Request for data out of type: %@",typeName);
-  NSData *retVal;           // our return data
   // attempt to archive our dictionary
   if([typeName isEqualToString:TNKlipboxDocumentTypeKey]) {
-    retVal = [NSKeyedArchiver archivedDataWithRootObject:self];
+    NSMutableData *myData = [NSMutableData data];
+    NSKeyedArchiver *myArchiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:myData];
+    [self encodeWithCoder:myArchiver];
+    [myArchiver finishEncoding];
+    outData = [NSData dataWithData:myData];
   }
-  DLog(@"Data Out: %@",retVal);
-  if ( !retVal && outError ) {
+  if ( !outData && outError ) {
     *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
     return nil;
   }
-  return retVal;
+  return outData;
 }
 
 - (void)encodeWithCoder: (NSCoder *)aCoder
