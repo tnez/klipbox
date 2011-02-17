@@ -18,11 +18,13 @@
   IBOutlet NSWindow *domainWindow;   // main document window
   NSMutableArray *saveBox;           // box to put every object which we want to save
 }
+@property (readonly) NSMutableArray *klipboxes;
 
 #pragma mark Document Creation
 - (id)initWithType: (NSString *)typeName error: (NSError **)outError;
 
 #pragma mark Document Editing
+- (void)makeNewKlipboxWithRect:(NSRect)aRect;
 - (void)recordNewWindowSize: (NSNotification *)aNote;
 
 #pragma mark Document Reading

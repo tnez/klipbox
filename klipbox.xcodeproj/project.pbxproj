@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1DDD582C0DA1D0D100B32029 /* TNKlipboxDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58280DA1D0D100B32029 /* TNKlipboxDocument.xib */; };
 		1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582A0DA1D0D100B32029 /* MainMenu.xib */; };
+		40C6AA7C130D7FF500BB72E9 /* TNKlipboxBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C6AA7B130D7FF500BB72E9 /* TNKlipboxBox.m */; };
+		40C6AAB2130D8EC200BB72E9 /* TNKlipboxBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C6AAB1130D8EC200BB72E9 /* TNKlipboxBoxView.m */; };
+		40C6AAB5130D924900BB72E9 /* TNKlipboxDomainWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C6AAB4130D924900BB72E9 /* TNKlipboxDomainWindowView.m */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC310486D014006FF6A4 /* TNKlipboxDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* TNKlipboxDocument.m */; settings = {ATTRIBUTES = (); }; };
@@ -29,6 +32,12 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* klipbox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = klipbox_Prefix.pch; sourceTree = "<group>"; };
+		40C6AA7A130D7FF500BB72E9 /* TNKlipboxBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxBox.h; sourceTree = "<group>"; };
+		40C6AA7B130D7FF500BB72E9 /* TNKlipboxBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxBox.m; sourceTree = "<group>"; };
+		40C6AAB0130D8EC200BB72E9 /* TNKlipboxBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxBoxView.h; sourceTree = "<group>"; };
+		40C6AAB1130D8EC200BB72E9 /* TNKlipboxBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxBoxView.m; sourceTree = "<group>"; };
+		40C6AAB3130D924900BB72E9 /* TNKlipboxDomainWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxDomainWindowView.h; sourceTree = "<group>"; };
+		40C6AAB4130D924900BB72E9 /* TNKlipboxDomainWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxDomainWindowView.m; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* klipbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = klipbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -88,6 +97,12 @@
 			children = (
 				2A37F4AEFDCFA73011CA2CEA /* TNKlipboxDocument.h */,
 				2A37F4ACFDCFA73011CA2CEA /* TNKlipboxDocument.m */,
+				40C6AA7A130D7FF500BB72E9 /* TNKlipboxBox.h */,
+				40C6AA7B130D7FF500BB72E9 /* TNKlipboxBox.m */,
+				40C6AAB0130D8EC200BB72E9 /* TNKlipboxBoxView.h */,
+				40C6AAB1130D8EC200BB72E9 /* TNKlipboxBoxView.m */,
+				40C6AAB3130D924900BB72E9 /* TNKlipboxDomainWindowView.h */,
+				40C6AAB4130D924900BB72E9 /* TNKlipboxDomainWindowView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -181,6 +196,9 @@
 			files = (
 				8D15AC310486D014006FF6A4 /* TNKlipboxDocument.m in Sources */,
 				8D15AC320486D014006FF6A4 /* main.m in Sources */,
+				40C6AA7C130D7FF500BB72E9 /* TNKlipboxBox.m in Sources */,
+				40C6AAB2130D8EC200BB72E9 /* TNKlipboxBoxView.m in Sources */,
+				40C6AAB5130D924900BB72E9 /* TNKlipboxDomainWindowView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

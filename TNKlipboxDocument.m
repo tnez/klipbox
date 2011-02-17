@@ -10,6 +10,8 @@
 
 @implementation TNKlipboxDocument
 
+@synthesize klipboxes;
+
 #pragma mark Housekeeping
 - (void)dealloc
 {
@@ -54,8 +56,8 @@
 {
   if(self=[super initWithType:typeName error:outError])
   {
-    x = 500;
-    y = 500;
+    x = 350;
+    y = 200;
     w = 650;
     h = 400;
     klipboxes = [[NSMutableArray alloc] initWithCapacity:5];
@@ -64,6 +66,22 @@
 }
 
 #pragma mark Document Editing
+- (void)makeNewKlipboxWithRect:(NSRect)aRect
+{
+  /*
+  NSError *error = nil;
+  // create the new klipbox and add to klipbox array
+  TNKlipboxBox *newBox = [[TNKlipboxBox alloc] initFromSender:self withRect:aRect error:&error];
+  if(error)
+  {
+    ELog(@"%@",[error localizedDescription]);
+    return;
+  }
+  [klipboxes addObject:newBox];
+   */
+  DLog(@"Attempting to make new klipbox w/ frame: x:%d y:%d w:%d h:%d",aRect.origin.x,aRect.origin.y,aRect.size.width,aRect.size.height);
+}
+
 - (void)recordNewWindowSize: (NSNotification *)aNote
 {
   DLog(@"Old Dimensions -- x:%f y:%f w:%f h:%f",x,y,w,h);
