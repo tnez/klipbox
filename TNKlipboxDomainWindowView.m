@@ -8,6 +8,7 @@
 #import "TNKlipboxDomainWindowView.h"
 #import "TNKlipboxDocument.h"
 #import "TNKlipboxBox.h"
+#import "TNKlipboxBoxView.h"
 
 @implementation TNKlipboxDomainWindowView
 
@@ -33,21 +34,10 @@
 }
 - (void)mouseDown: (NSEvent *)theEvent
 {
-  // grab the origin for the new klipbox
-  newKlipboxOrigin = [myWindow mouseLocationOutsideOfEventStream];
-}
-
-- (void)mouseDragged: (NSEvent *)theEvent
-{
-  // update the dimensions of the new klipbox
-  newKlipboxSize = NSMakeSize( newKlipboxOrigin.x + [theEvent deltaX], newKlipboxOrigin.y + [theEvent deltaY] );
-}
-
-- (void)mouseUp: (NSEvent *)theEvent
-{
-  // initialize the new klipbox using the derived frame
-  NSRect newKlipboxRect = NSMakeRect(newKlipboxOrigin.x,newKlipboxOrigin.y,newKlipboxSize.width,newKlipboxSize.height);
-  [owner makeNewKlipboxWithRect:newKlipboxRect];
+  // make new klipbox box w/ origin at point
+  NSPoint tempOrigin = [myWindow mouseLocationOutsideOfEventStream];
+  NSRect tempFrame = NSMakeRect(tempOrigin.x,tempOrigin.y,50,50);
+  [owner makeNewKlipboxWithRect:tempFrame];
 }
 
 @end

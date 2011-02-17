@@ -30,6 +30,7 @@
 #pragma mark Document Reading
 - (void)decodeWithCoder: (NSCoder *)aCoder;
 - (BOOL)readFromData: (NSData*)data ofType:(NSString *)typeName error:(NSError **)outError;
+- (void)renderKlipboxes;
 
 #pragma mark Document Writing
 - (NSData *)dataOfType: (NSString *)typeName error:(NSError **)outError;

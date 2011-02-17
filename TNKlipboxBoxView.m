@@ -25,10 +25,10 @@
 - (void)drawRect:(NSRect)rect
 {
   // fill color w/ white
-  [[NSColor whiteColor] set];
-  NSRectFill([self frame]);
+  [[NSColor blackColor] set];
+  [NSBezierPath fillRect:rect];
   // set transparency
-  [self setAlphaValue:0.5];
+  [self setAlphaValue:0.4];
 }
 
 @end

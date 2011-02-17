@@ -8,12 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 @class TNKlipboxDocument;
+@class TNKlipboxBoxView;
 
 @interface TNKlipboxDomainWindowView : NSView {
   IBOutlet TNKlipboxDocument *owner;
   IBOutlet NSWindow *myWindow;
-  NSPoint newKlipboxOrigin;
-  NSSize newKlipboxSize;
+  TNKlipboxBoxView *tempView;
 }
 @property (assign) IBOutlet TNKlipboxDocument *owner;
 @property (assign) IBOutlet NSWindow *myWindow;

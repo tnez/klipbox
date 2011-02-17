@@ -7,6 +7,7 @@
 //
 
 #import "TNKlipboxDocument.h"
+#import "TNKlipboxBox.h"
 
 @implementation TNKlipboxDocument
 
@@ -49,6 +50,7 @@
   [domainWindow setAlphaValue:[self transparency]];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recordNewWindowSize:) name:NSWindowDidResizeNotification object:domainWindow];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recordNewWindowSize:) name:NSWindowDidMoveNotification object:domainWindow];
+  [self renderKlipboxes];
 }
 
 #pragma mark Document Creation
@@ -68,18 +70,20 @@
 #pragma mark Document Editing
 - (void)makeNewKlipboxWithRect:(NSRect)aRect
 {
-  /*
   NSError *error = nil;
+  NSView *newView;
   // create the new klipbox and add to klipbox array
-  TNKlipboxBox *newBox = [[TNKlipboxBox alloc] initFromSender:self withRect:aRect error:&error];
+  TNKlipboxBox *newBox = [[TNKlipboxBox alloc] initForDocument:self withRect:aRect usingView:&newView error:&error];
   if(error)
   {
     ELog(@"%@",[error localizedDescription]);
     return;
   }
-  [klipboxes addObject:newBox];
-   */
-  DLog(@"Attempting to make new klipbox w/ frame: x:%d y:%d w:%d h:%d",aRect.origin.x,aRect.origin.y,aRect.size.width,aRect.size.height);
+  DLog(@"Look at my new box: %@",newBox);
+  [klipboxes addObject:newBox]; // add new box to stack
+  [[domainWindow contentView] addSubview:newView];
+  [newView setNeedsDisplay:YES];
+  [[domainWindow contentView] setNeedsDisplay:YES];
 }
 
 - (void)recordNewWindowSize: (NSNotification *)aNote
@@ -118,6 +122,18 @@
 	}
   DLog(@"My Data: %@",self);
   return YES;
+}
+
+- (void)renderKlipboxes
+{
+  NSView *newView;
+  for(TNKlipboxBox *box in klipboxes)
+  {
+    [box setMyDocument:self];
+    [box drawUsingView:&newView];
+    [[domainWindow contentView] addSubview:newView];
+  }
+  [[domainWindow contentView] setNeedsDisplay:YES];
 }
 
 #pragma mark Document Writing

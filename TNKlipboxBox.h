@@ -29,12 +29,25 @@
 @property (readwrite) NSInteger microPollingInterval;
 @property (retain) NSString *pipeCommand;
 
-- (id)initFromSender:(id)sender withRect:(NSRect)rect error:(NSError **)outError;
+- (void)drawUsingView:(NSView **)newView;
+- (NSRect)frame;
+- (id)initForDocument:(TNKlipboxDocument *)document withRect:(NSRect)rect usingView:(NSView **)view error:(NSError **)outError;
+- (void)setFrame:(NSRect)newFrame;
 - (void)updateFrame:(NSNotification *)aNote;
 
 #pragma mark NSCodingProtocol
 - (id)initWithCoder:(NSCoder *)aCoder;
 - (void)encodeWithCoder:(NSCoder *)aCoder;
+
+NSString * const TNKlipboxBoxIDKey;
+NSString * const TNKlipboxBoxXKey;
+NSString * const TNKlipboxBoxYKey;
+NSString * const TNKlipboxBoxWidthKey;
+NSString * const TNKlipboxBoxHeightKey;
+NSString * const TNKlipboxBoxMacroPollingKey;
+NSString * const TNKlipboxBoxMicroPollingKey;
+NSString * const TNKlipboxBoxPipeCommandKey;
+
 
 @end
 
