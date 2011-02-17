@@ -17,7 +17,7 @@
   self = [super initWithFrame:frame];
   if (self)
   {
-    // Initialization code here.
+    selectionMode = 0;
   }
   return self;
 }
@@ -30,5 +30,46 @@
   // set transparency
   [self setAlphaValue:0.4];
 }
+
+#pragma mark Mouse Events
+
+- (BOOL)acceptsFirstResponder
+{
+  return YES;
+}
+
+- (void)mouseDown: (NSEvent *)theEvent
+{
+  if([theEvent clickCount] == 2) // if this is a double-click
+  {
+    DLog(@"Doulbe-click has occured!!!");
+    return;
+  }
+  selectionMode = TNKlipboxBoxEditModeMove;
+}
+
+- (void)mouseDragged: (NSEvent *)theEvent
+{
+  if(selectionMode==TNKlipboxBoxEditModeMove)
+  {
+    NSRect oldFrame = [self frame];
+    float newX = oldFrame.origin.x + [theEvent deltaX];
+    float newY = oldFrame.origin.y - [theEvent deltaY];
+    [self setFrame:NSMakeRect(newX,newY,oldFrame.size.width,oldFrame.size.height)];
+  }
+}
+
+- (void)mouseUp: (NSEvent *)theEvent
+{
+  switch (selectionMode) {
+    case TNKlipboxBoxEditModeMove:
+      [owner updateFrame];
+      break;
+    default:
+      break;
+  }
+}
+  
+
 
 @end

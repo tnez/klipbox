@@ -33,7 +33,7 @@
 - (NSRect)frame;
 - (id)initForDocument:(TNKlipboxDocument *)document withRect:(NSRect)rect usingView:(NSView **)view error:(NSError **)outError;
 - (void)setFrame:(NSRect)newFrame;
-- (void)updateFrame:(NSNotification *)aNote;
+- (void)updateFrame;
 
 #pragma mark NSCodingProtocol
 - (id)initWithCoder:(NSCoder *)aCoder;

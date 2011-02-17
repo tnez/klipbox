@@ -81,7 +81,7 @@
   h = newFrame.size.height;
 }
 
-- (void)updateFrame:(NSNotification *)aNote
+- (void)updateFrame
 {
   NSRect theFrame = [myView frame];
   x = theFrame.origin.x;

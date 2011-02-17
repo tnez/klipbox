@@ -11,6 +11,15 @@
 @interface TNKlipboxBoxView : NSView
 {
   TNKlipboxBox *owner;
+  NSUInteger selectionMode;
 }
 @property (assign) TNKlipboxBox *owner;
+
+enum TNKlipboxBoxEditMode {
+  TNKlipboxBoxEditModeInactive = 0,
+  TNKlipboxBoxEditModeResize = 1,
+  TNKlipboxBoxEditModeMove = 2,
+  TNKlipboxBoxEditModeFocus = 3
+}; typedef NSInteger TNKlipboxBoxEditMode;
+
 @end
