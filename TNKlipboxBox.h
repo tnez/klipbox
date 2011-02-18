@@ -11,20 +11,21 @@
 
 @interface TNKlipboxBox : NSObject <NSCoding>
 {
-  NSString *boxID;
+  TNKlipboxDocument *myDocument;  
   NSView *myView;
-  TNKlipboxDocument *myDocument;
   float x;
   float y;
   float w;
   float h;
+  NSString *boxID;  
   NSInteger macroPollingInterval;
   NSInteger microPollingInterval;
   NSString *pipeCommand;
 }
-@property (retain) NSString *boxID;
-@property (retain) NSView *myView;
+
 @property (assign) TNKlipboxDocument *myDocument;
+@property (retain) NSView *myView;
+@property (retain) NSString *boxID;
 @property (readwrite) NSInteger macroPollingInterval;
 @property (readwrite) NSInteger microPollingInterval;
 @property (retain) NSString *pipeCommand;

@@ -40,6 +40,7 @@
     return;
   }
   [self setMyView:[[TNKlipboxBoxView alloc] initWithFrame:[self frame]]];
+  [myView setOwner:self];
   *newView = myView;
   [myView setNeedsDisplay:YES];
 }

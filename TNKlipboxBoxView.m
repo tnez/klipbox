@@ -42,6 +42,7 @@
   if([theEvent clickCount] == 2) // if this is a double-click
   {
     DLog(@"Doulbe-click has occured!!!");
+    [NSBundle loadNibNamed:@"TNKlipboxBoxPanel" owner:owner];
     return;
   }
   if([theEvent modifierFlags] & NSShiftKeyMask)
