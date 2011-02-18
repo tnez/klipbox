@@ -32,7 +32,6 @@
 }
 
 #pragma mark Mouse Events
-
 - (BOOL)acceptsFirstResponder
 {
   return YES;
@@ -45,7 +44,14 @@
     DLog(@"Doulbe-click has occured!!!");
     return;
   }
+  if([theEvent modifierFlags] & NSShiftKeyMask)
+  {
+    selectionMode = TNKlipboxBoxEditModeResize;
+    DLog(@"Entering resize mode");
+    return;
+  }
   selectionMode = TNKlipboxBoxEditModeMove;
+  DLog(@"Entering move mode");
 }
 
 - (void)mouseDragged: (NSEvent *)theEvent
@@ -57,17 +63,24 @@
     float newY = oldFrame.origin.y - [theEvent deltaY];
     [self setFrame:NSMakeRect(newX,newY,oldFrame.size.width,oldFrame.size.height)];
   }
+  if(selectionMode==TNKlipboxBoxEditModeResize)
+  {
+    NSRect oldFrame = [self frame];
+    float newY = oldFrame.origin.y - [theEvent deltaY];    
+    float newW = oldFrame.size.width + [theEvent deltaX];
+    float newH = oldFrame.size.height + [theEvent deltaY];
+    [self setFrame:NSMakeRect(oldFrame.origin.x, newY, newW, newH)];
+  }
 }
 
 - (void)mouseUp: (NSEvent *)theEvent
 {
   switch (selectionMode) {
-    case TNKlipboxBoxEditModeMove:
+    default:
       [owner updateFrame];
       break;
-    default:
-      break;
   }
+  selectionMode = 0;
 }
   
 
