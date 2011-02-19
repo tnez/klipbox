@@ -17,8 +17,12 @@
   NSString *fileURL;                 // URL of file (used to save)
   IBOutlet NSWindow *domainWindow;   // main document window
   NSMutableArray *saveBox;           // box to put every object which we want to save
+  BOOL isRunning;
 }
 @property (readonly) NSMutableArray *klipboxes;
+
+#pragma mark Accessors
+- (NSWindow *)domainWindow;
 
 #pragma mark Document Creation
 - (id)initWithType: (NSString *)typeName error: (NSError **)outError;
@@ -35,6 +39,10 @@
 #pragma mark Document Writing
 - (NSData *)dataOfType: (NSString *)typeName error:(NSError **)outError;
 - (void)encodeWithCoder: (NSCoder *)aCoder;
+
+#pragma mark Operations
+- (IBAction)start: (id)sender;
+- (IBAction)stop: (id)sender;
 
 #pragma mark Preferences
 - (NSRect)frame;

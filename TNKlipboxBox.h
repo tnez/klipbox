@@ -12,7 +12,7 @@
 @interface TNKlipboxBox : NSObject <NSCoding>
 {
   TNKlipboxDocument *myDocument;  
-  NSView *myView;
+  TNKlipboxBoxView *myView;
   float x;
   float y;
   float w;
@@ -21,6 +21,9 @@
   NSInteger macroPollingInterval;
   NSInteger microPollingInterval;
   NSString *pipeCommand;
+  BOOL shouldContinueRecording;
+  NSTimer *outsideTimer;
+  NSTimer *insideTimer;
 }
 
 @property (assign) TNKlipboxDocument *myDocument;
@@ -35,6 +38,11 @@
 - (id)initForDocument:(TNKlipboxDocument *)document withRect:(NSRect)rect usingView:(NSView **)view error:(NSError **)outError;
 - (void)setFrame:(NSRect)newFrame;
 - (void)updateFrame;
+
+#pragma mark Run Operations
+- (void)beginRecording;
+- (void)stopRecording;
+- (void)takeSnapshot;
 
 #pragma mark NSCodingProtocol
 - (id)initWithCoder:(NSCoder *)aCoder;

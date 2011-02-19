@@ -91,6 +91,59 @@
   h = theFrame.size.height;
 }
 
+#pragma mark Run Operations
+- (void)beginRecording
+{
+  @synchronized(self)
+  {
+    shouldContinueRecording = YES;
+    outsideTimer = [NSTimer scheduledTimerWithTimeInterval:macroPollingInterval/1000 target:self selector:@selector(initiateSnapshot:) userInfo:nil repeats:YES];
+    DLog(@"%@ will begin recording",boxID);
+  }
+}
+
+- (void)initiateSnapshot: (NSTimer *)theTimer
+{
+  if(shouldContinueRecording)
+  {
+    DLog(@"%@ is trying to take a snapshot",boxID);
+    [self performSelectorInBackground:@selector(takeSnapshot) withObject:nil];
+  }
+}
+
+- (void)stopRecording
+{
+  @synchronized(self)
+  {
+    shouldContinueRecording = NO;
+    [outsideTimer invalidate];
+    DLog(@"%@ will stop recording",boxID);
+  }
+}
+
+- (void)takeSnapshot
+{
+  // get the image
+
+  // TODO: add image to our processing queue
+  // ...for testing we will write out the image for human inspection
+  // ...
+  // get image reference
+  CGImageRef snapshot = CGWindowListCreateImage(NSRectToCGRect([self frame]),kCGWindowListOptionOnScreenBelowWindow,[[myDocument domainWindow] windowNumber],kCGWindowImageBoundsIgnoreFraming);  
+  // setup image destination
+  CFMutableDataRef mData = CFDataCreateMutable(kCFAllocatorDefault,0);  
+  CFStringRef type = CFSTR("JPEG");
+  CGImageDestinationRef dest = CGImageDestinationCreateWithData(mData,type,1,nil);
+  // add image reference to destination
+  CGImageDestinationAddImage(dest,snapshot,NULL);
+  // finalize image destination
+  if(!CGImageDestinationFinalize(dest)) ELog(@"There was an error writing out image for %@",boxID);
+  NSData *outData = [[NSData alloc] initWithBytesNoCopy:mData length:CFDataGetLength(mData)];
+  [outData writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.jpeg",boxID,[NSDate date]] atomically:YES];
+  [outData release];
+  DLog(@"%@ did finish taking snapshot",boxID);
+}  
+  
 #pragma mark NSCodingProtocol
 - (id)initWithCoder:(NSCoder *)aCoder {
   if(self=[super init])

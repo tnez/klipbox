@@ -53,6 +53,12 @@
   [self renderKlipboxes];
 }
 
+#pragma mark Accessors
+- (NSWindow *)domainWindow
+{
+  return domainWindow;
+}
+
 #pragma mark Document Creation
 - (id)initWithType: (NSString *)typeName error: (NSError **)outError
 {
@@ -170,6 +176,27 @@
   @catch (NSException * e)
   {
     ELog(@"%@",e);
+  }
+}
+
+#pragma mark Operations
+- (IBAction)start: (id)sender
+{
+  if(!isRunning)
+  {
+    DLog(@"Starting %@",[self displayName]);
+    [klipboxes makeObjectsPerformSelector:@selector(beginRecording)];
+    isRunning = YES;
+  }
+}
+
+- (IBAction)stop: (id)sender
+{
+  if(isRunning)
+  {
+    DLog(@"Stopping %@",[self displayName]);
+    [klipboxes makeObjectsPerformSelector:@selector(stopRecording)];
+    isRunning = NO;
   }
 }
 
