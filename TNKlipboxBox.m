@@ -36,7 +36,7 @@
 {
   // TODO: correct implementation
   // ...currently the workaround is to use a fullscreen domain window and
-  // pad the top 20 to account for menu bars
+  // pad the top 45 to account for menu bars
   NSRect tempRect = [self frame];
   return NSMakeRect(tempRect.origin.x,tempRect.origin.y+45,tempRect.size.width,tempRect.size.height);
 }
