@@ -33,6 +33,7 @@
 @property (readwrite) NSInteger microPollingInterval;
 @property (retain) NSString *pipeCommand;
 
+- (NSRect)absFrame;
 - (void)drawUsingView:(NSView **)newView;
 - (NSRect)frame;
 - (id)initForDocument:(TNKlipboxDocument *)document withRect:(NSRect)rect usingView:(NSView **)view error:(NSError **)outError;

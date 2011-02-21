@@ -32,6 +32,15 @@
   [super dealloc];
 }
 
+- (NSRect)absFrame
+{
+  // offset of document window
+  NSPoint offset = [[myDocument domainWindow] convertBaseToScreen:NSMakePoint(0,0)];
+  // add offset to view's origin
+  NSPoint absOrigin = NSMakePoint(x+offset.x,y+offset.y);
+  return NSMakeRect(absOrigin.x,absOrigin.y,w,h);
+}
+  
 - (void)drawUsingView:(NSView **)newView
 {
   if(!newView)
@@ -123,25 +132,21 @@
 
 - (void)takeSnapshot
 {
-  // get the image
-
+  // this message is invoked on background threads...
+  // so it needs its own autorelease pool
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   // TODO: add image to our processing queue
   // ...for testing we will write out the image for human inspection
   // ...
   // get image reference
-  CGImageRef snapshot = CGWindowListCreateImage(NSRectToCGRect([self frame]),kCGWindowListOptionOnScreenBelowWindow,[[myDocument domainWindow] windowNumber],kCGWindowImageBoundsIgnoreFraming);  
+  CGImageRef snapshot = CGWindowListCreateImage(NSRectToCGRect([self absFrame]),kCGWindowListOptionOnScreenBelowWindow,[[myDocument domainWindow] windowNumber],kCGWindowImageBoundsIgnoreFraming);  
   // setup image destination
-  CFMutableDataRef mData = CFDataCreateMutable(kCFAllocatorDefault,0);  
-  CFStringRef type = CFSTR("JPEG");
-  CGImageDestinationRef dest = CGImageDestinationCreateWithData(mData,type,1,nil);
-  // add image reference to destination
-  CGImageDestinationAddImage(dest,snapshot,NULL);
-  // finalize image destination
-  if(!CGImageDestinationFinalize(dest)) ELog(@"There was an error writing out image for %@",boxID);
-  NSData *outData = [[NSData alloc] initWithBytesNoCopy:mData length:CFDataGetLength(mData)];
-  [outData writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.jpeg",boxID,[NSDate date]] atomically:YES];
-  [outData release];
+  NSBitmapImageRep *bm = [[NSBitmapImageRep alloc] initWithCGImage:snapshot];
+  NSData *oData = [bm representationUsingType:NSTIFFFileType properties:nil];
+  [oData writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.tiff",boxID,[NSDate date]] atomically:YES];
+  [bm release];
   DLog(@"%@ did finish taking snapshot",boxID);
+  [pool release];
 }  
   
 #pragma mark NSCodingProtocol
