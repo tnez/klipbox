@@ -18,8 +18,8 @@
 {
   // remove notifications
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  // release any reserved memory
-  // [klipboxes release];klipboxes=nil;
+  // release local memory
+  [klipboxes release];klipboxes=nil;
   // super...
   [super dealloc];
 }
