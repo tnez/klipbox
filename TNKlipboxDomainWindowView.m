@@ -27,6 +27,12 @@
     // Drawing code here.
 }
 
+#pragma mark Geometry
+- (BOOL)isFlipped
+{
+  return YES;
+}
+
 #pragma mark Mouse Handling
 - (BOOL)acceptsFirstResponder
 {
@@ -35,8 +41,9 @@
 - (void)mouseDown: (NSEvent *)theEvent
 {
   // make new klipbox box w/ origin at point
-  NSPoint tempOrigin = [myWindow mouseLocationOutsideOfEventStream];
-  NSRect tempFrame = NSMakeRect(tempOrigin.x,tempOrigin.y,50,50);
+  NSPoint tempOrigin = [theEvent locationInWindow];
+  NSSize mySize = [self frame].size;
+  NSRect tempFrame = NSMakeRect(tempOrigin.x,mySize.height-tempOrigin.y,50,50);
   [owner makeNewKlipboxWithRect:tempFrame];
 }
 

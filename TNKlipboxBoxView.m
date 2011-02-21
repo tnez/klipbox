@@ -61,16 +61,16 @@
   {
     NSRect oldFrame = [self frame];
     float newX = oldFrame.origin.x + [theEvent deltaX];
-    float newY = oldFrame.origin.y - [theEvent deltaY];
+    float newY = oldFrame.origin.y + [theEvent deltaY];
     [self setFrame:NSMakeRect(newX,newY,oldFrame.size.width,oldFrame.size.height)];
   }
   if(selectionMode==TNKlipboxBoxEditModeResize)
   {
     NSRect oldFrame = [self frame];
-    float newY = oldFrame.origin.y - [theEvent deltaY];    
+    // float newY = oldFrame.origin.y + [theEvent deltaY];    
     float newW = oldFrame.size.width + [theEvent deltaX];
     float newH = oldFrame.size.height + [theEvent deltaY];
-    [self setFrame:NSMakeRect(oldFrame.origin.x, newY, newW, newH)];
+    [self setFrame:NSMakeRect(oldFrame.origin.x, oldFrame.origin.y, newW, newH)];
   }
 }
 

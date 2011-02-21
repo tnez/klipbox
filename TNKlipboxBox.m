@@ -34,11 +34,11 @@
 
 - (NSRect)absFrame
 {
-  // offset of document window
-  NSPoint offset = [[myDocument domainWindow] convertBaseToScreen:NSMakePoint(0,0)];
-  // add offset to view's origin
-  NSPoint absOrigin = NSMakePoint(x+offset.x,y+offset.y);
-  return NSMakeRect(absOrigin.x,absOrigin.y,w,h);
+  // TODO: correct implementation
+  // ...currently the workaround is to use a fullscreen domain window and
+  // pad the top 20 to account for menu bars
+  NSRect tempRect = [self frame];
+  return NSMakeRect(tempRect.origin.x,tempRect.origin.y+45,tempRect.size.width,tempRect.size.height);
 }
   
 - (void)drawUsingView:(NSView **)newView
@@ -145,7 +145,7 @@
   NSData *oData = [bm representationUsingType:NSTIFFFileType properties:nil];
   [oData writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.tiff",boxID,[NSDate date]] atomically:YES];
   [bm release];
-  DLog(@"%@ did finish taking snapshot",boxID);
+  DLog(@"%@ did finish taking snapshot at %@",boxID,[NSDate date]);
   [pool release];
 }  
   
