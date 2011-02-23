@@ -22,6 +22,7 @@
 @synthesize macroPollingInterval;
 @synthesize microPollingInterval;
 @synthesize pipeCommand;
+@synthesize lastImage;
 
 - (void)dealloc
 {
@@ -143,9 +144,13 @@
   // setup image destination
   NSBitmapImageRep *bm = [[NSBitmapImageRep alloc] initWithCGImage:snapshot];
   NSData *oData = [bm representationUsingType:NSTIFFFileType properties:nil];
-  [oData writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.tiff",boxID,[NSDate date]] atomically:YES];
-  [bm release];
+  if(![oData isEqualToData:lastImage]) {
+    DLog(@"Image change has been detected");
+    [oData writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.tiff",boxID,[NSDate date]] atomically:YES];
+    [self setLastImage:oData];
+  }
   DLog(@"%@ did finish taking snapshot at %@",boxID,[NSDate date]);
+  [bm release];    
   [pool release];
 }  
   

@@ -24,6 +24,7 @@
   BOOL shouldContinueRecording;
   NSTimer *outsideTimer;
   NSTimer *insideTimer;
+  NSData *lastImage;
 }
 
 @property (assign) TNKlipboxDocument *myDocument;
@@ -32,6 +33,7 @@
 @property (readwrite) NSInteger macroPollingInterval;
 @property (readwrite) NSInteger microPollingInterval;
 @property (retain) NSString *pipeCommand;
+@property (retain) NSData *lastImage;
 
 - (NSRect)absFrame;
 - (void)drawUsingView:(NSView **)newView;
