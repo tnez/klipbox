@@ -16,6 +16,10 @@
 
 @implementation TNKlipboxBox
 
+#define SNAPSHOT CGWindowListCreateImage(NSRectToCGRect([self absFrame]),kCGWindowListOptionOnScreenBelowWindow,[[myDocument domainWindow] windowNumber],kCGWindowImageBoundsIgnoreFraming)
+#define BITMAP_FROM_SNAPSHOT [[[NSBitmapImageRep alloc] initWithCGImage:SNAPSHOT] autorelease]
+#define DATA_FROM_BITMAP [BITMAP_FROM_SNAPSHOT representationUsingType:NSTIFFFileType properties:nil]
+
 @synthesize boxID;
 @synthesize myView;
 @synthesize myDocument;
@@ -117,7 +121,8 @@
   if(shouldContinueRecording)
   {
     DLog(@"%@ is trying to take a snapshot",boxID);
-    [self performSelectorInBackground:@selector(takeSnapshot) withObject:nil];
+    // take snapshot on a new thread
+    [NSThread detachNewThreadSelector:@selector(takeSnapshot) toTarget:self withObject:nil];
   }
 }
 
@@ -136,21 +141,33 @@
   // this message is invoked on background threads...
   // so it needs its own autorelease pool
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  #ifdef DEBUG
+  clock_t start, end;
+  double elapsed;
+  start = clock();
+  #endif
   // TODO: add image to our processing queue
   // ...for testing we will write out the image for human inspection
   // ...
-  // get image reference
-  CGImageRef snapshot = CGWindowListCreateImage(NSRectToCGRect([self absFrame]),kCGWindowListOptionOnScreenBelowWindow,[[myDocument domainWindow] windowNumber],kCGWindowImageBoundsIgnoreFraming);  
-  // setup image destination
-  NSBitmapImageRep *bm = [[NSBitmapImageRep alloc] initWithCGImage:snapshot];
-  NSData *oData = [bm representationUsingType:NSTIFFFileType properties:nil];
-  if(![oData isEqualToData:lastImage]) {
+  // get bitmap rep
+  NSData *newImage = DATA_FROM_BITMAP;
+  if(![newImage isEqualToData:lastImage])
+  {
     DLog(@"Image change has been detected");
-    [oData writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.tiff",boxID,[NSDate date]] atomically:YES];
-    [self setLastImage:oData];
+    do {
+       newImage = DATA_FROM_BITMAP;
+      usleep(5000);
+    }
+    while(![DATA_FROM_BITMAP isEqualToData:newImage]);
+    [self setLastImage:newImage];
+    [lastImage writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.tiff",boxID,[NSDate date]] atomically:YES];
   }
-  DLog(@"%@ did finish taking snapshot at %@",boxID,[NSDate date]);
-  [bm release];    
+  DLog(@"%@ did finish taking snapshot at %@ on thread %@",boxID,[NSDate date],[NSThread currentThread]);
+  #ifdef DEBUG
+  end = clock();
+  elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
+  DLog(@"Time: %f",elapsed);
+  #endif  
   [pool release];
 }  
   
