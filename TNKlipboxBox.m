@@ -126,6 +126,23 @@
   }
 }
 
+/**
+ Returns an autoreleased NSData object representing the screenshot
+ */
+- (NSData *)screenshotAsData
+{
+  // screenRect ---> CGImage
+  CGImageRef imgRef = CGWindowListCreateImage(NSRectToCGRect([self absFrame]),kCGWindowListOptionOnScreenBelowWindow,[[myDocument domainWindow] windowNumber],kCGWindowImageBoundsIgnoreFraming);
+  // CGImage ---> bitmap
+  NSBitmapImageRep *bitRep = [[NSBitmapImageRep alloc] initWithCGImage:imgRef];
+  // bitmap ---> data
+  NSData *imgData = [[NSData alloc] initWithData:[bitRep representationUsingType:NSTIFFFileType properties:nil]];
+  // release CGImage and bitmap
+  CGImageRelease(imgRef);
+  [bitRep release]; bitRep=nil;
+  return [imgData autorelease];
+}  
+  
 - (void)stopRecording
 {
   @synchronized(self)
@@ -148,17 +165,16 @@
   #endif
   // TODO: add image to our processing queue
   // ...for testing we will write out the image for human inspection
-  // ...
-  // get bitmap rep
-  NSData *newImage = DATA_FROM_BITMAP;
+  NSData *newImage = [self screenshotAsData];
   if(![newImage isEqualToData:lastImage])
   {
     DLog(@"Image change has been detected");
-    do {
-       newImage = DATA_FROM_BITMAP;
+    do
+    {
+      newImage = [self screenshotAsData];
       usleep(5000);
     }
-    while(![DATA_FROM_BITMAP isEqualToData:newImage]);
+    while(![[self screenshotAsData] isEqualToData:newImage]);
     [self setLastImage:newImage];
     [lastImage writeToFile:[NSString stringWithFormat:@"/Users/tnesland/Desktop/OUT/%@_%d.tiff",boxID,[NSDate date]] atomically:YES];
   }
@@ -168,7 +184,7 @@
   elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
   DLog(@"Time: %f",elapsed);
   #endif  
-  [pool release];
+  [pool drain];
 }  
   
 #pragma mark NSCodingProtocol
