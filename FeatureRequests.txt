@@ -1,0 +1,27 @@
+#################################################################
+FEATURE REQUESTS:
+#################################################################
+
+
+1.01: Create Auto-Aligned KlipBoxes for Symmetric Targets
+=================================================================
+Abstract - Many UI elements are repeated in multiple locations
+           in the same window. In order to capture images that
+           can be compared directly we need the boxes to be
+           oriented around the target object in exactly the same
+           manner. This will be extremely difficult, if not
+           impossible, to do by hand. Therefor it will be 
+           beneficial to create a command to do this in the
+           application.
+-----------------------------------------------------------------
+User Interaction - With focus on the archetypical box, the user
+                   will select this command by menu or key
+                   equivalent. The user will then be prompted to
+                   select a point near the center of the target
+                   object.
+-----------------------------------------------------------------
+Algorithm - 1. copy archetype box
+            2. paste new box w/ center at target point
+            3. jitter box while pixels don't match
+               (this will be non-trivial)
+

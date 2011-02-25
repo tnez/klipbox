@@ -10,6 +10,7 @@
 		1DDD582C0DA1D0D100B32029 /* TNKlipboxDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58280DA1D0D100B32029 /* TNKlipboxDocument.xib */; };
 		1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582A0DA1D0D100B32029 /* MainMenu.xib */; };
 		404EE4E3130F085500CDB4D2 /* TNKlipboxBoxPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 404EE4E2130F085500CDB4D2 /* TNKlipboxBoxPanel.xib */; };
+		40C34CE1131828FE00251450 /* FeatureRequests.txt in Resources */ = {isa = PBXBuildFile; fileRef = 40C34CE0131828FE00251450 /* FeatureRequests.txt */; };
 		40C6AA7C130D7FF500BB72E9 /* TNKlipboxBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C6AA7B130D7FF500BB72E9 /* TNKlipboxBox.m */; };
 		40C6AAB2130D8EC200BB72E9 /* TNKlipboxBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C6AAB1130D8EC200BB72E9 /* TNKlipboxBoxView.m */; };
 		40C6AAB5130D924900BB72E9 /* TNKlipboxDomainWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C6AAB4130D924900BB72E9 /* TNKlipboxDomainWindowView.m */; };
@@ -34,6 +35,7 @@
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* klipbox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = klipbox_Prefix.pch; sourceTree = "<group>"; };
 		404EE4E2130F085500CDB4D2 /* TNKlipboxBoxPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNKlipboxBoxPanel.xib; sourceTree = "<group>"; };
+		40C34CE0131828FE00251450 /* FeatureRequests.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FeatureRequests.txt; sourceTree = "<group>"; };
 		40C6AA7A130D7FF500BB72E9 /* TNKlipboxBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxBox.h; sourceTree = "<group>"; };
 		40C6AA7B130D7FF500BB72E9 /* TNKlipboxBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxBox.m; sourceTree = "<group>"; };
 		40C6AAB0130D8EC200BB72E9 /* TNKlipboxBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxBoxView.h; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* klipbox */ = {
 			isa = PBXGroup;
 			children = (
+				40C34CDF131828CE00251450 /* Information */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
@@ -140,6 +143,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		40C34CDF131828CE00251450 /* Information */ = {
+			isa = PBXGroup;
+			children = (
+				40C34CE0131828FE00251450 /* FeatureRequests.txt */,
+			);
+			name = Information;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -188,6 +199,7 @@
 				1DDD582C0DA1D0D100B32029 /* TNKlipboxDocument.xib in Resources */,
 				1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */,
 				404EE4E3130F085500CDB4D2 /* TNKlipboxBoxPanel.xib in Resources */,
+				40C34CE1131828FE00251450 /* FeatureRequests.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
