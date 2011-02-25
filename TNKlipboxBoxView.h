@@ -10,10 +10,16 @@
 
 @interface TNKlipboxBoxView : NSView
 {
-  TNKlipboxBox *owner;
+  IBOutlet TNKlipboxBox *owner;
   NSUInteger selectionMode;
 }
-@property (assign) TNKlipboxBox *owner;
+@property (assign) IBOutlet TNKlipboxBox *owner;
+
+#pragma mark Responders
+- (IBAction)copy:(id)sender;
+- (IBAction)copyToTarget:(id)sender;
+- (IBAction)cut:(id)sender;
+- (IBAction)delete:(id)sender;
 
 enum TNKlipboxBoxEditMode {
   TNKlipboxBoxEditModeInactive = 0,

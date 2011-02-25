@@ -44,7 +44,10 @@
   NSPoint tempOrigin = [theEvent locationInWindow];
   NSSize mySize = [self frame].size;
   NSRect tempFrame = NSMakeRect(tempOrigin.x,mySize.height-tempOrigin.y,50,50);
-  [owner makeNewKlipboxWithRect:tempFrame];
+  NSView *newView = [owner makeNewKlipboxWithRect:tempFrame];
+  [self addSubview:newView];
+  [newView setNeedsDisplay:YES];
+  [self setNeedsDisplay:YES];
 }
 
 @end

@@ -9,11 +9,13 @@
 #import <time.h>
 @class TNKlipboxDocument;
 @class TNKlipboxBoxView;
+@class TNKlipboxBoxInfoPanel;
 
 @interface TNKlipboxBox : NSObject <NSCoding>
 {
   TNKlipboxDocument *myDocument;  
-  TNKlipboxBoxView *myView;
+  IBOutlet TNKlipboxBoxView *myView;
+  IBOutlet TNKlipboxBoxInfoPanel *myInfoPanel;
   float x;
   float y;
   float w;
@@ -29,7 +31,8 @@
 }
 
 @property (assign) TNKlipboxDocument *myDocument;
-@property (retain) NSView *myView;
+@property (assign) IBOutlet TNKlipboxBoxView *myView;
+@property (assign) IBOutlet TNKlipboxBoxInfoPanel *myInfoPanel;
 @property (retain) NSString *boxID;
 @property (readwrite) NSInteger macroPollingInterval;
 @property (readwrite) NSInteger microPollingInterval;
@@ -42,6 +45,9 @@
 - (id)initForDocument:(TNKlipboxDocument *)document withRect:(NSRect)rect usingView:(NSView **)view error:(NSError **)outError;
 - (void)setFrame:(NSRect)newFrame;
 - (void)updateFrame;
+
+#pragma mark Edit Operations
+- (IBAction)openInfoPanel:(id)sender;
 
 #pragma mark Run Operations
 - (void)beginRecording;

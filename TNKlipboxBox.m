@@ -13,6 +13,7 @@
 #import "TNKlipboxBox.h"
 #import "TNKlipboxDocument.h"
 #import "TNKlipboxBoxView.h"
+#import "TNKlipboxBoxInfoPanel.h"
 
 @implementation TNKlipboxBox
 
@@ -22,6 +23,7 @@
 
 @synthesize boxID;
 @synthesize myView;
+@synthesize myInfoPanel;
 @synthesize myDocument;
 @synthesize macroPollingInterval;
 @synthesize microPollingInterval;
@@ -53,8 +55,10 @@
     ELog(@"No view pointer provided");
     return;
   }
-  [self setMyView:[[TNKlipboxBoxView alloc] initWithFrame:[self frame]]];
-  [myView setOwner:self];
+  // load nib and claim ownership
+  [NSBundle loadNibNamed:@"TNKlipbox" owner:self];
+  // [self setMyView:[[TNKlipboxBoxView alloc] initWithFrame:[self frame]]];
+  // [myView setOwner:self];
   *newView = myView;
   [myView setNeedsDisplay:YES];
 }
@@ -73,8 +77,8 @@
     [self setBoxID:[NSString stringWithFormat:@"New Klipbox %d",[[myDocument klipboxes] count]]];
     [self setFrame:rect];
     // TODO: set default macro and micro polling info
-    [self setMacroPollingInterval:500]; // half a second
-    [self setMicroPollingInterval:10];  // hundreth of a second
+    [self setMacroPollingInterval:1000]; // half a second
+    [self setMicroPollingInterval:200];  // hundreth of a second
     // TODO: set default pipe command
     [self setPipeCommand:@"> /Users/tnesland/Desktop/ImgOut/%@.jpg"]; // write image out to ~/Desktop/ImgOut/...jpg
     // draw view
@@ -103,6 +107,17 @@
   y = theFrame.origin.y;
   w = theFrame.size.width;
   h = theFrame.size.height;
+}
+
+#pragma mark Edit Operations
+- (IBAction)openInfoPanel:(id)sender
+{
+  // load values for info panel
+  [myInfoPanel loadValues];
+  // run modal
+  DLog(@"Attempting to run modal for panel");
+  if(!myInfoPanel) ELog(@"Lost pointer to myInfoPanel");
+  [NSApp runModalForWindow:myInfoPanel];
 }
 
 #pragma mark Run Operations

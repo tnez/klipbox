@@ -28,7 +28,7 @@
 - (id)initWithType: (NSString *)typeName error: (NSError **)outError;
 
 #pragma mark Document Editing
-- (void)makeNewKlipboxWithRect:(NSRect)aRect;
+- (NSView *)makeNewKlipboxWithRect:(NSRect)aRect;
 - (void)recordNewWindowSize: (NSNotification *)aNote;
 
 #pragma mark Document Reading

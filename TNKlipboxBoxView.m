@@ -18,6 +18,8 @@
   if (self)
   {
     selectionMode = 0;
+    [self setFocusRingType:[NSView defaultFocusRingType]];
+    [self setKeyboardFocusRingNeedsDisplayInRect:frame];
   }
   return self;
 }
@@ -41,8 +43,8 @@
 {
   if([theEvent clickCount] == 2) // if this is a double-click
   {
-    DLog(@"Doulbe-click has occured!!!");
-    [NSBundle loadNibNamed:@"TNKlipboxBoxPanel" owner:owner];
+    DLog(@"Double Click!");
+    [owner openInfoPanel:self];
     return;
   }
   if([theEvent modifierFlags] & NSShiftKeyMask)
@@ -63,6 +65,7 @@
     float newX = oldFrame.origin.x + [theEvent deltaX];
     float newY = oldFrame.origin.y + [theEvent deltaY];
     [self setFrame:NSMakeRect(newX,newY,oldFrame.size.width,oldFrame.size.height)];
+    [self setKeyboardFocusRingNeedsDisplayInRect:[self frame]];
   }
   if(selectionMode==TNKlipboxBoxEditModeResize)
   {
@@ -71,6 +74,7 @@
     float newW = oldFrame.size.width + [theEvent deltaX];
     float newH = oldFrame.size.height + [theEvent deltaY];
     [self setFrame:NSMakeRect(oldFrame.origin.x, oldFrame.origin.y, newW, newH)];
+    [self setKeyboardFocusRingNeedsDisplayInRect:[self frame]];
   }
 }
 
@@ -82,8 +86,24 @@
       break;
   }
   selectionMode = 0;
+  // give the box focus
 }
-  
 
+#pragma mark Responders
+- (IBAction)copy:(id)sender
+{
+}
+
+- (IBAction)copyToTarget:(id)sender
+{
+}
+
+- (IBAction)cut:(id)sender;
+{
+}
+
+- (IBAction)delete:(id)sender;
+{
+}
 
 @end

@@ -74,7 +74,7 @@
 }
 
 #pragma mark Document Editing
-- (void)makeNewKlipboxWithRect:(NSRect)aRect
+- (NSView *)makeNewKlipboxWithRect:(NSRect)aRect
 {
   NSError *error = nil;
   NSView *newView;
@@ -83,13 +83,11 @@
   if(error)
   {
     ELog(@"%@",[error localizedDescription]);
-    return;
+    return nil;
   }
   DLog(@"Look at my new box: %@",newBox);
   [klipboxes addObject:newBox]; // add new box to stack
-  [[domainWindow contentView] addSubview:newView];
-  [newView setNeedsDisplay:YES];
-  [[domainWindow contentView] setNeedsDisplay:YES];
+  return newView;
 }
 
 - (void)recordNewWindowSize: (NSNotification *)aNote
