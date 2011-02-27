@@ -59,7 +59,7 @@
 }
 
 - (BOOL)isFlipped {
-  return NO;
+  return YES;
 }
 
 #pragma mark Keyboard Events

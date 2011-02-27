@@ -45,14 +45,8 @@
 {
   // TODO: correct implementation
   // ...currently the workaround is to use a fullscreen domain window and
-  // pad the top 45 to account for menu bars
-  //NSRect tempRect = [self frame];
-  //return NSMakeRect(tempRect.origin.x,tempRect.origin.y+45,tempRect.size.width,tempRect.size.height);
-  // get base rect
-  NSPoint baseOrigin = [myView convertRectToBase:[self frame]].origin;
-  // get absolute origin
-  NSPoint absOrigin = [[myDocument domainWindow] convertBaseToScreen:NSMakePoint(baseOrigin.x,baseOrigin.y)];
-  return NSMakeRect(absOrigin.x,absOrigin.y,w,h);
+  // pad the top 45 to account for menu bars  
+  return NSMakeRect(x,y+44.0,w,h);
 }
   
 - (void)drawUsingView:(NSView **)newView
