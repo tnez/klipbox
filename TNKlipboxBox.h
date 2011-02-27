@@ -28,6 +28,7 @@
   NSTimer *outsideTimer;
   NSTimer *insideTimer;
   NSData *lastImage;
+  BOOL guard;
 }
 
 @property (assign) TNKlipboxDocument *myDocument;
@@ -38,6 +39,7 @@
 @property (readwrite) NSInteger microPollingInterval;
 @property (retain) NSString *pipeCommand;
 @property (retain) NSData *lastImage;
+@property (readwrite) BOOL guard;
 
 - (NSRect)absFrame;
 - (void)drawUsingView:(NSView **)newView;

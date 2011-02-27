@@ -29,6 +29,7 @@
 @synthesize microPollingInterval;
 @synthesize pipeCommand;
 @synthesize lastImage;
+@synthesize guard;
 
 - (void)dealloc
 {
@@ -135,9 +136,13 @@
 {
   if(shouldContinueRecording)
   {
-    DLog(@"%@ is trying to take a snapshot",boxID);
-    // take snapshot on a new thread
-    [NSThread detachNewThreadSelector:@selector(takeSnapshot) toTarget:self withObject:nil];
+    if(!guard)
+    {
+      DLog(@"%@ is trying to take a snapshot",boxID);
+      // take snapshot on a new thread
+      [self setGuard:YES];
+      [NSThread detachNewThreadSelector:@selector(takeSnapshot) toTarget:self withObject:nil];
+    }
   }
 }
 
@@ -198,7 +203,8 @@
   end = clock();
   elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
   DLog(@"Time: %f",elapsed);
-  #endif  
+  #endif
+  [self setGuard:NO];
   [pool drain];
 }  
   
