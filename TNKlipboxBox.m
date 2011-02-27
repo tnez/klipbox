@@ -99,6 +99,7 @@
   y = newFrame.origin.y;
   w = newFrame.size.width;
   h = newFrame.size.height;
+  [myView setNeedsDisplay:YES];
 }
 
 - (void)updateFrame

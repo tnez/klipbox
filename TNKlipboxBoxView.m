@@ -12,33 +12,104 @@
 
 @synthesize owner;
 
+- (void)awakeFromNib
+{
+  [self setFrame:[owner frame]];
+  [self setNeedsDisplay:YES];
+}
+
 - (id)initWithFrame:(NSRect)frame
 {
   self = [super initWithFrame:frame];
   if (self)
   {
     selectionMode = 0;
-    [self setFocusRingType:[NSView defaultFocusRingType]];
-    [self setKeyboardFocusRingNeedsDisplayInRect:frame];
+//    [self setFrame:frame];
+//    [self setKeyboardFocusRingNeedsDisplayInRect:[self bounds]];
   }
   return self;
 }
 
-- (void)drawRect:(NSRect)rect
+- (void)drawRect:(NSRect)dirtyRect
 {
-  // fill color w/ white
+  // 1) Invalidate the area around the focus ring
+  [self setKeyboardFocusRingNeedsDisplayInRect:[self bounds]];
+  // Draw background
   [[NSColor blackColor] set];
-  [NSBezierPath fillRect:rect];
+  NSRectFill(dirtyRect);
+  // 2) Save the graphics state
+  [NSGraphicsContext saveGraphicsState];
+  // 3) Set the focus ring type
+  if ([[self window] firstResponder] == self) {
+    // NSSetFocusRingStyle(NSFocusRingAbove);
+    // or
+    NSSetFocusRingStyle(NSFocusRingBelow);
+  }
+  // If I do draw background here instead then background gets focus ring as well.
+  // 4) Draw a rectangle
+  NSBezierPath *path = [NSBezierPath bezierPathWithRect:NSInsetRect([self bounds], 1.0, 1.0)];
+  [[NSColor whiteColor] set];
+  [path stroke];
+  // 5) Restore the graphics state
+  [NSGraphicsContext restoreGraphicsState];  
   // set transparency
   [self setAlphaValue:0.4];
 }
 
-#pragma mark Mouse Events
-- (BOOL)acceptsFirstResponder
+#pragma mark Keyboard Events
+- (void)keyDown:(NSEvent *)theEvent
 {
-  return YES;
+  if([theEvent modifierFlags] & NSShiftKeyMask)
+  {
+    NSSize tempSize = [self frame].size;
+    switch([theEvent keyCode])
+    {
+      case 123: // left key
+        [self resizeW:(tempSize.width-1.0) H:tempSize.height];
+        break;
+      case 124: // right key
+        [self resizeW:(tempSize.width+1.0) H:tempSize.height];
+        break;
+      case 125: // down key
+        [self resizeW:tempSize.width H:(tempSize.height+1.0)];
+        break;
+      case 126: // up key
+        [self resizeW:tempSize.width H:(tempSize.height-1.0)];
+        break;
+      default:
+        [super keyDown:theEvent];
+        return;
+    }
+    [super keyDown:theEvent];
+    return;
+  }
+  if([theEvent modifierFlags] & NSNumericPadKeyMask)
+  {
+    [self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+    return;
+  }
+  // normal key events
+  switch ([theEvent keyCode]) {
+    case 48: // tab
+      // TODO: [owner selectNextKlipbox:self];
+      break;
+    case 51: // delete key
+      [self delete:theEvent];
+      break;
+    case 53: // escape key
+      [[[owner myDocument] domainWindow] makeFirstResponder:nil];
+      break;
+    case 117: // backspace key
+      [self delete:theEvent];
+      break;
+    default:
+      DLog(@"Key code: %d",[theEvent keyCode]);
+      [super keyDown:theEvent];
+      break;
+  }
 }
 
+#pragma mark Mouse Events
 - (void)mouseDown: (NSEvent *)theEvent
 {
   if([theEvent clickCount] == 2) // if this is a double-click
@@ -89,6 +160,26 @@
   // give the box focus
 }
 
+#pragma mark Messages
+- (BOOL)acceptsFirstResponder
+{
+  return YES;
+}
+
+- (BOOL)becomeFirstResponder
+{
+  DLog(@"%@ is becoming first responder",[owner boxID]);
+  [self setKeyboardFocusRingNeedsDisplayInRect:[self bounds]];
+  return [super becomeFirstResponder];
+}
+
+- (BOOL)resignFirstResponder
+{
+  DLog(@"%@ is resigning first responder",[owner boxID]);
+  [self setKeyboardFocusRingNeedsDisplayInRect:[self bounds]];  
+  return [super resignFirstResponder];
+}
+
 #pragma mark Responders
 - (IBAction)copy:(id)sender
 {
@@ -98,12 +189,58 @@
 {
 }
 
-- (IBAction)cut:(id)sender;
+- (IBAction)cut:(id)sender
 {
 }
 
-- (IBAction)delete:(id)sender;
+- (IBAction)delete:(id)sender
 {
+  DLog(@"%@ is trying to self destruct!!!",[owner boxID]);
 }
 
+#pragma mark Move
+- (IBAction)moveUp:(id)sender
+{
+  // get new frame
+  NSRect myFrame = [self frame];
+  [self setFrame:NSMakeRect(myFrame.origin.x,myFrame.origin.y-1.0,myFrame.size.width,myFrame.size.height)];
+  [self setNeedsDisplay:YES];
+  [owner updateFrame];
+}
+
+- (IBAction)moveDown:(id)sender
+{
+  // get new frame
+  NSRect myFrame = [self frame];
+  [self setFrame:NSMakeRect(myFrame.origin.x,myFrame.origin.y+1.0,myFrame.size.width,myFrame.size.height)];
+  [self setNeedsDisplay:YES];
+  [owner updateFrame];
+}
+
+- (IBAction)moveLeft:(id)sender
+{
+  // get new frame
+  NSRect myFrame = [self frame];
+  [self setFrame:NSMakeRect(myFrame.origin.x-1.0,myFrame.origin.y,myFrame.size.width,myFrame.size.height)];
+  [self setNeedsDisplay:YES];
+  [owner updateFrame];
+}
+
+- (IBAction)moveRight:(id)sender
+{
+  // get new frame
+  NSRect myFrame = [self frame];
+  [self setFrame:NSMakeRect(myFrame.origin.x+1.0,myFrame.origin.y,myFrame.size.width,myFrame.size.height)];
+  [self setNeedsDisplay:YES];
+  [owner updateFrame];
+}
+
+#pragma mark Resize
+- (void)resizeW:(float)width H:(float)height
+{
+  NSRect oldFrame = [self frame];
+  [self setFrame:NSMakeRect(oldFrame.origin.x,oldFrame.origin.y,width,height)];
+  [self setNeedsDisplay:YES];
+  [owner updateFrame];
+}
 @end

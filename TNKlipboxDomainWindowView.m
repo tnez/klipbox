@@ -46,7 +46,6 @@
   NSRect tempFrame = NSMakeRect(tempOrigin.x,mySize.height-tempOrigin.y,50,50);
   NSView *newView = [owner makeNewKlipboxWithRect:tempFrame];
   [self addSubview:newView];
-  [newView setNeedsDisplay:YES];
   [self setNeedsDisplay:YES];
 }
 
