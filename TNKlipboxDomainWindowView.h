@@ -17,4 +17,8 @@
 }
 @property (assign) IBOutlet TNKlipboxDocument *owner;
 @property (assign) IBOutlet NSWindow *myWindow;
+
+#pragma mark Keyboard Handling
+- (IBAction)paste:(id)sender;
+
 @end

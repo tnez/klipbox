@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #import <Cocoa/Cocoa.h>
+@class TNKlipboxBox;
 
 @interface TNKlipboxDocument : NSDocument
 {
@@ -28,8 +29,9 @@
 - (id)initWithType: (NSString *)typeName error: (NSError **)outError;
 
 #pragma mark Document Editing
-- (NSView *)makeNewKlipboxWithRect:(NSRect)aRect;
+- (void)makeNewKlipboxWithRect:(NSRect)aRect;
 - (void)recordNewWindowSize: (NSNotification *)aNote;
+- (void)selectNextKlipboxUsingCurrentKlipbox:(TNKlipboxBox *)currentBox;
 
 #pragma mark Document Reading
 - (void)decodeWithCoder: (NSCoder *)aCoder;

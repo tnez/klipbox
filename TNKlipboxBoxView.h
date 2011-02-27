@@ -21,6 +21,9 @@
 - (IBAction)cut:(id)sender;
 - (IBAction)delete:(id)sender;
 
+#pragma mark Move To Private
+- (void)resizeW:(float)width H:(float)height;
+
 enum TNKlipboxBoxEditMode {
   TNKlipboxBoxEditModeInactive = 0,
   TNKlipboxBoxEditModeResize = 1,

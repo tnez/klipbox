@@ -49,6 +49,7 @@
 - (void)updateFrame;
 
 #pragma mark Edit Operations
+- (IBAction)delete:(id)sender;
 - (IBAction)openInfoPanel:(id)sender;
 
 #pragma mark Run Operations

@@ -74,20 +74,24 @@
 }
 
 #pragma mark Document Editing
-- (NSView *)makeNewKlipboxWithRect:(NSRect)aRect
+- (void)makeNewKlipboxWithRect:(NSRect)aRect
 {
+  DLog(@"Originial Rect: %@",NSStringFromRect(aRect));
   NSError *error = nil;
   NSView *newView;
+  NSRect cRect = [[domainWindow contentView] convertRectFromBase:aRect];
+  DLog(@"Converted Rect: %@",NSStringFromRect(cRect));
   // create the new klipbox and add to klipbox array
-  TNKlipboxBox *newBox = [[TNKlipboxBox alloc] initForDocument:self withRect:aRect usingView:&newView error:&error];
+  TNKlipboxBox *newBox = [[TNKlipboxBox alloc] initForDocument:self withRect:cRect usingView:&newView error:&error];
   if(error)
   {
     ELog(@"%@",[error localizedDescription]);
-    return nil;
+    return;
   }
   DLog(@"Look at my new box: %@",newBox);
   [klipboxes addObject:newBox]; // add new box to stack
-  return newView;
+  [[domainWindow contentView] addSubview:newView];
+  [[domainWindow contentView] setNeedsDisplay:YES];
 }
 
 - (void)recordNewWindowSize: (NSNotification *)aNote
@@ -99,6 +103,22 @@
   w = rect.size.width;
   h = rect.size.height;
   DLog(@"New Dimensions -- x:%f y:%f w:%f h:%f",x,y,w,h);  
+}
+
+- (void)selectNextKlipboxUsingCurrentKlipbox:(TNKlipboxBox *)currentBox
+{
+  NSInteger c_idx;                                  // index of current klipbox
+  NSInteger t_idx;                                  // index of target klipbox
+  TNKlipboxBox *t_box;                              // target klipbox
+  if(!currentBox) return;                           // if klipbox param is nil, exit immed
+  c_idx = [klipboxes indexOfObject:currentBox];     // get the index of the current klipbox
+  if(++c_idx == [klipboxes count]) {                // get the next index in the array (back to zero if at end)
+    t_idx = 0;                                      // target first element
+  } else {
+    t_idx = c_idx;                                  // target next element
+  }
+  t_box = [klipboxes objectAtIndex:t_idx];          // reference to target box
+  [domainWindow makeFirstResponder:(NSView *)[t_box myView]]; // focus box's view
 }
 
 #pragma mark Document Reading

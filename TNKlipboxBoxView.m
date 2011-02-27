@@ -6,7 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #import "TNKlipboxBoxView.h"
+#import "TNKlipboxDocument.h"
 #import "TNKlipboxBox.h"
+#import "TNKlipboxPasteBoard.h"
 
 @implementation TNKlipboxBoxView
 
@@ -56,6 +58,10 @@
   [self setAlphaValue:0.4];
 }
 
+- (BOOL)isFlipped {
+  return NO;
+}
+
 #pragma mark Keyboard Events
 - (void)keyDown:(NSEvent *)theEvent
 {
@@ -80,7 +86,6 @@
         [super keyDown:theEvent];
         return;
     }
-    [super keyDown:theEvent];
     return;
   }
   if([theEvent modifierFlags] & NSNumericPadKeyMask)
@@ -90,14 +95,20 @@
   }
   // normal key events
   switch ([theEvent keyCode]) {
+    case 36: // return
+      [owner openInfoPanel:self];
+      break;
     case 48: // tab
-      // TODO: [owner selectNextKlipbox:self];
+      [[owner myDocument] selectNextKlipboxUsingCurrentKlipbox:owner];  
       break;
     case 51: // delete key
       [self delete:theEvent];
       break;
     case 53: // escape key
       [[[owner myDocument] domainWindow] makeFirstResponder:nil];
+      break;
+    case 76: // enter key
+      [owner openInfoPanel:self];
       break;
     case 117: // backspace key
       [self delete:theEvent];
@@ -141,7 +152,7 @@
   if(selectionMode==TNKlipboxBoxEditModeResize)
   {
     NSRect oldFrame = [self frame];
-    // float newY = oldFrame.origin.y + [theEvent deltaY];    
+    //float newY = oldFrame.origin.y + [theEvent deltaY];    
     float newW = oldFrame.size.width + [theEvent deltaX];
     float newH = oldFrame.size.height + [theEvent deltaY];
     [self setFrame:NSMakeRect(oldFrame.origin.x, oldFrame.origin.y, newW, newH)];
@@ -183,6 +194,7 @@
 #pragma mark Responders
 - (IBAction)copy:(id)sender
 {
+  [[TNKlipboxPasteBoard sharedPasteBoard] copyObject:owner];
 }
 
 - (IBAction)copyToTarget:(id)sender
@@ -191,11 +203,16 @@
 
 - (IBAction)cut:(id)sender
 {
+  [[TNKlipboxPasteBoard sharedPasteBoard] cutObject:owner];
 }
 
 - (IBAction)delete:(id)sender
 {
   DLog(@"%@ is trying to self destruct!!!",[owner boxID]);
+  [[self window] makeFirstResponder:[self superview]];
+  [[self superview] setNeedsDisplay:YES];
+  [self removeFromSuperview];
+  [owner delete:sender];
 }
 
 #pragma mark Move

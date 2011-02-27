@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1DDD582C0DA1D0D100B32029 /* TNKlipboxDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58280DA1D0D100B32029 /* TNKlipboxDocument.xib */; };
 		1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582A0DA1D0D100B32029 /* MainMenu.xib */; };
+		4074E2DD131AC59E00CBB649 /* TNKlipboxPasteBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 4074E2DC131AC59E00CBB649 /* TNKlipboxPasteBoard.m */; };
 		40C34CE1131828FE00251450 /* FeatureRequests.txt in Resources */ = {isa = PBXBuildFile; fileRef = 40C34CE0131828FE00251450 /* FeatureRequests.txt */; };
 		40C34D0713184FBA00251450 /* TNKlipbox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40C34D0613184FBA00251450 /* TNKlipbox.xib */; };
 		40C34DE31318651200251450 /* TNKlipboxBoxInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40C34DE21318651200251450 /* TNKlipboxBoxInfoPanel.m */; };
@@ -35,6 +36,8 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* klipbox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = klipbox_Prefix.pch; sourceTree = "<group>"; };
+		4074E2DB131AC59E00CBB649 /* TNKlipboxPasteBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxPasteBoard.h; sourceTree = "<group>"; };
+		4074E2DC131AC59E00CBB649 /* TNKlipboxPasteBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxPasteBoard.m; sourceTree = "<group>"; };
 		40C34CE0131828FE00251450 /* FeatureRequests.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FeatureRequests.txt; sourceTree = "<group>"; };
 		40C34D0613184FBA00251450 /* TNKlipbox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNKlipbox.xib; sourceTree = "<group>"; };
 		40C34DE11318651200251450 /* TNKlipboxBoxInfoPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxBoxInfoPanel.h; sourceTree = "<group>"; };
@@ -103,16 +106,18 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2A37F4AEFDCFA73011CA2CEA /* TNKlipboxDocument.h */,
-				2A37F4ACFDCFA73011CA2CEA /* TNKlipboxDocument.m */,
 				40C6AA7A130D7FF500BB72E9 /* TNKlipboxBox.h */,
 				40C6AA7B130D7FF500BB72E9 /* TNKlipboxBox.m */,
-				40C6AAB0130D8EC200BB72E9 /* TNKlipboxBoxView.h */,
-				40C6AAB1130D8EC200BB72E9 /* TNKlipboxBoxView.m */,
-				40C6AAB3130D924900BB72E9 /* TNKlipboxDomainWindowView.h */,
-				40C6AAB4130D924900BB72E9 /* TNKlipboxDomainWindowView.m */,
 				40C34DE11318651200251450 /* TNKlipboxBoxInfoPanel.h */,
 				40C34DE21318651200251450 /* TNKlipboxBoxInfoPanel.m */,
+				40C6AAB0130D8EC200BB72E9 /* TNKlipboxBoxView.h */,
+				40C6AAB1130D8EC200BB72E9 /* TNKlipboxBoxView.m */,
+				2A37F4AEFDCFA73011CA2CEA /* TNKlipboxDocument.h */,
+				2A37F4ACFDCFA73011CA2CEA /* TNKlipboxDocument.m */,
+				40C6AAB3130D924900BB72E9 /* TNKlipboxDomainWindowView.h */,
+				40C6AAB4130D924900BB72E9 /* TNKlipboxDomainWindowView.m */,
+				4074E2DB131AC59E00CBB649 /* TNKlipboxPasteBoard.h */,
+				4074E2DC131AC59E00CBB649 /* TNKlipboxPasteBoard.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -221,6 +226,7 @@
 				40C6AAB2130D8EC200BB72E9 /* TNKlipboxBoxView.m in Sources */,
 				40C6AAB5130D924900BB72E9 /* TNKlipboxDomainWindowView.m in Sources */,
 				40C34DE31318651200251450 /* TNKlipboxBoxInfoPanel.m in Sources */,
+				4074E2DD131AC59E00CBB649 /* TNKlipboxPasteBoard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
