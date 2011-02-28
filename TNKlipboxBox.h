@@ -54,6 +54,7 @@
 
 #pragma mark Run Operations
 - (void)beginRecording;
+- (NSData *)screenshotAsData;
 - (void)stopRecording;
 - (void)takeSnapshot;
 

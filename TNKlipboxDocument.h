@@ -43,7 +43,17 @@
 - (void)encodeWithCoder: (NSCoder *)aCoder;
 
 #pragma mark Operations
+/**
+ Compare the output of each klipbox and group images together given their equality. This will generate a report which contains color-coded listing of each klipbox. Double-clicking a record will pull up the image returned.
+ */
+- (IBAction)analyze: (id)sender;
+/**
+ Tell every klipbox in the document to start capturing images.
+ */
 - (IBAction)start: (id)sender;
+/**
+ Tell every klipbox in the document to stop capturing images.
+ */
 - (IBAction)stop: (id)sender;
 
 #pragma mark Preferences

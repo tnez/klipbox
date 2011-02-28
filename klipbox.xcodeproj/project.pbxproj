@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1DDD582C0DA1D0D100B32029 /* TNKlipboxDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58280DA1D0D100B32029 /* TNKlipboxDocument.xib */; };
 		1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582A0DA1D0D100B32029 /* MainMenu.xib */; };
+		40724906131C17560055CC03 /* TNKlipboxReport.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40724905131C17560055CC03 /* TNKlipboxReport.xib */; };
+		4072490A131C24540055CC03 /* TNKlipboxAnalysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 40724909131C24540055CC03 /* TNKlipboxAnalysis.m */; };
+		40724980131C38F70055CC03 /* TNKlipboxProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4072497F131C38F70055CC03 /* TNKlipboxProgressIndicator.m */; };
 		4074E2DD131AC59E00CBB649 /* TNKlipboxPasteBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 4074E2DC131AC59E00CBB649 /* TNKlipboxPasteBoard.m */; };
 		40C34CE1131828FE00251450 /* FeatureRequests.txt in Resources */ = {isa = PBXBuildFile; fileRef = 40C34CE0131828FE00251450 /* FeatureRequests.txt */; };
 		40C34D0713184FBA00251450 /* TNKlipbox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40C34D0613184FBA00251450 /* TNKlipbox.xib */; };
@@ -36,6 +39,11 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* klipbox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = klipbox_Prefix.pch; sourceTree = "<group>"; };
+		40724905131C17560055CC03 /* TNKlipboxReport.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNKlipboxReport.xib; sourceTree = "<group>"; };
+		40724908131C24540055CC03 /* TNKlipboxAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxAnalysis.h; sourceTree = "<group>"; };
+		40724909131C24540055CC03 /* TNKlipboxAnalysis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxAnalysis.m; sourceTree = "<group>"; };
+		4072497E131C38F70055CC03 /* TNKlipboxProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxProgressIndicator.h; sourceTree = "<group>"; };
+		4072497F131C38F70055CC03 /* TNKlipboxProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxProgressIndicator.m; sourceTree = "<group>"; };
 		4074E2DB131AC59E00CBB649 /* TNKlipboxPasteBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNKlipboxPasteBoard.h; sourceTree = "<group>"; };
 		4074E2DC131AC59E00CBB649 /* TNKlipboxPasteBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNKlipboxPasteBoard.m; sourceTree = "<group>"; };
 		40C34CE0131828FE00251450 /* FeatureRequests.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FeatureRequests.txt; sourceTree = "<group>"; };
@@ -106,6 +114,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				40724908131C24540055CC03 /* TNKlipboxAnalysis.h */,
+				40724909131C24540055CC03 /* TNKlipboxAnalysis.m */,
 				40C6AA7A130D7FF500BB72E9 /* TNKlipboxBox.h */,
 				40C6AA7B130D7FF500BB72E9 /* TNKlipboxBox.m */,
 				40C34DE11318651200251450 /* TNKlipboxBoxInfoPanel.h */,
@@ -118,6 +128,8 @@
 				40C6AAB4130D924900BB72E9 /* TNKlipboxDomainWindowView.m */,
 				4074E2DB131AC59E00CBB649 /* TNKlipboxPasteBoard.h */,
 				4074E2DC131AC59E00CBB649 /* TNKlipboxPasteBoard.m */,
+				4072497E131C38F70055CC03 /* TNKlipboxProgressIndicator.h */,
+				4072497F131C38F70055CC03 /* TNKlipboxProgressIndicator.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -140,6 +152,7 @@
 				1DDD58280DA1D0D100B32029 /* TNKlipboxDocument.xib */,
 				1DDD582A0DA1D0D100B32029 /* MainMenu.xib */,
 				40C34D0613184FBA00251450 /* TNKlipbox.xib */,
+				40724905131C17560055CC03 /* TNKlipboxReport.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -210,6 +223,7 @@
 				1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */,
 				40C34CE1131828FE00251450 /* FeatureRequests.txt in Resources */,
 				40C34D0713184FBA00251450 /* TNKlipbox.xib in Resources */,
+				40724906131C17560055CC03 /* TNKlipboxReport.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +241,8 @@
 				40C6AAB5130D924900BB72E9 /* TNKlipboxDomainWindowView.m in Sources */,
 				40C34DE31318651200251450 /* TNKlipboxBoxInfoPanel.m in Sources */,
 				4074E2DD131AC59E00CBB649 /* TNKlipboxPasteBoard.m in Sources */,
+				4072490A131C24540055CC03 /* TNKlipboxAnalysis.m in Sources */,
+				40724980131C38F70055CC03 /* TNKlipboxProgressIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

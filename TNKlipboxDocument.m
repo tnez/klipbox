@@ -1,13 +1,13 @@
-//
-//  TNKlipboxDocument.m
+////////////////////////////////////////////////////////////////////////////////
 //  klipbox
-//
+//  ----------------------------------------------------------------------------
 //  Created by Travis Nesland on 2/14/11.
 //  Copyright 2011. All rights reserved.
-//
+////////////////////////////////////////////////////////////////////////////////
 
 #import "TNKlipboxDocument.h"
 #import "TNKlipboxBox.h"
+#import "TNKlipboxAnalysis.h"
 
 @implementation TNKlipboxDocument
 
@@ -198,6 +198,30 @@
 }
 
 #pragma mark Operations
+- (IBAction)analyze: (id)sender {
+  clock_t start,end;                                        // markers used to calc latency
+  double elapsed;                                           // """"""""""""""""""""""""""""
+  TNKlipboxAnalysis *a = [[TNKlipboxAnalysis alloc] init];  // create the analysis object
+  for(TNKlipboxBox *box in klipboxes) {                     // for every klipbox
+    start = clock();                                        // start timer
+    NSData *imgData = [box screenshotAsData];               // get image data
+    end = clock();                                          // stop timer
+    elapsed = ((double)(end-start))/CLOCKS_PER_SEC;         // calc latency
+    NSString *latStr = [NSString stringWithFormat:@"%f",elapsed];
+    // prepare a dictionary
+    NSMutableDictionary *aDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  [box boxID],TNKlipboxAnalysisBoxIDKey, // box ID
+                                  latStr,TNKlipboxAnalysisLatencyKey,    // latency 
+                                  [NSNumber numberWithInt:0],TNKlipboxAnalysisImgGroupKey,
+                                  imgData,TNKlipboxAnalysisImgDataKey,   // image data
+                                  nil];
+    [a addRecord:aDict];          // add dictionary to analysis results
+  }                               // --- end of image sampling
+  [a documentDidFinishAnalysis];  // tell analysis object that we are done sampling images
+//  [a autorelease];                // autorelease analysis object
+                                  // (it should still be retained by the nib
+}
+  
 - (IBAction)start: (id)sender
 {
   if(!isRunning)
@@ -221,7 +245,7 @@
 #pragma mark Preferences
 
 /** 
- Needs to return are target frame... this may be dynamic in the future
+ Needs to return our target frame... this may be dynamic in the future
  */
 - (NSRect)frame
 {
