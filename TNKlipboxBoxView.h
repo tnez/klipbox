@@ -12,8 +12,12 @@
 {
   IBOutlet TNKlipboxBox *owner;
   NSUInteger selectionMode;
+  NSColor *color;
 }
 @property (assign) IBOutlet TNKlipboxBox *owner;
+@property (retain) NSColor *color;
+
+- (void)setHighlight:(BOOL)highlight;
 
 #pragma mark Responders
 - (IBAction)copy:(id)sender;

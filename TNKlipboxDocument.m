@@ -7,6 +7,7 @@
 
 #import "TNKlipboxDocument.h"
 #import "TNKlipboxBox.h"
+#import "TNKlipboxBoxView.h"
 #import "TNKlipboxAnalysis.h"
 
 @implementation TNKlipboxDocument
@@ -20,6 +21,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   // release local memory
   [klipboxes release];klipboxes=nil;
+  [selectedBoxes release];selectedBoxes=nil;
   // super...
   [super dealloc];
 }
@@ -29,7 +31,7 @@
     self = [super init];
     if (self)
     {
-      // any global initialization???
+      selectedBoxes = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -105,6 +107,20 @@
   DLog(@"New Dimensions -- x:%f y:%f w:%f h:%f",x,y,w,h);  
 }
 
+- (void)highlightKlipbox:(TNKlipboxBox *)aBox {
+  if(!aBox) {
+    DLog(@"Trying to unselect boxes from list: %@",selectedBoxes);
+    for(TNKlipboxBox *box in selectedBoxes) {
+      [[box myView] setHighlight:NO];
+      [selectedBoxes removeObject:box];
+    }
+    DLog(@"Selected boxes after purge: %@",selectedBoxes);
+  } else {
+    [[aBox myView] setHighlight:YES];
+    [selectedBoxes addObject:aBox];
+  }
+}
+  
 - (void)selectNextKlipboxUsingCurrentKlipbox:(TNKlipboxBox *)currentBox
 {
   NSInteger c_idx;                                  // index of current klipbox
@@ -201,7 +217,8 @@
 - (IBAction)analyze: (id)sender {
   clock_t start,end;                                        // markers used to calc latency
   double elapsed;                                           // """"""""""""""""""""""""""""
-  TNKlipboxAnalysis *a = [[TNKlipboxAnalysis alloc] init];  // create the analysis object
+  // create the analysis object
+  TNKlipboxAnalysis *a = [[TNKlipboxAnalysis alloc] initForDocument:self];
   for(TNKlipboxBox *box in klipboxes) {                     // for every klipbox
     start = clock();                                        // start timer
     NSData *imgData = [box screenshotAsData];               // get image data
@@ -214,6 +231,7 @@
                                   latStr,TNKlipboxAnalysisLatencyKey,    // latency 
                                   [NSNumber numberWithInt:0],TNKlipboxAnalysisImgGroupKey,
                                   imgData,TNKlipboxAnalysisImgDataKey,   // image data
+                                  box,TNKlipboxAnalysisPtrKey,           // object ptr 
                                   nil];
     [a addRecord:aDict];          // add dictionary to analysis results
   }                               // --- end of image sampling

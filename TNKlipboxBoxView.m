@@ -10,14 +10,23 @@
 #import "TNKlipboxBox.h"
 #import "TNKlipboxPasteBoard.h"
 
+#define TNKlipboxBoxDefaultColor [NSColor blackColor]
+#define TNKlipboxBoxHighlightColor [NSColor yellowColor]
+
 @implementation TNKlipboxBoxView
 
 @synthesize owner;
+@synthesize color;
+
+- (void)dealloc {
+  [color release];color=nil;
+  [super dealloc];
+}
 
 - (void)awakeFromNib
 {
   [self setFrame:[owner frame]];
-  [self setNeedsDisplay:YES];
+  [self setHighlight:NO];
 }
 
 - (id)initWithFrame:(NSRect)frame
@@ -26,8 +35,7 @@
   if (self)
   {
     selectionMode = 0;
-//    [self setFrame:frame];
-//    [self setKeyboardFocusRingNeedsDisplayInRect:[self bounds]];
+    [self setHighlight:NO];
   }
   return self;
 }
@@ -37,7 +45,7 @@
   // 1) Invalidate the area around the focus ring
   [self setKeyboardFocusRingNeedsDisplayInRect:[self bounds]];
   // Draw background
-  [[NSColor blackColor] set];
+  [color set];
   NSRectFill(dirtyRect);
   // 2) Save the graphics state
   [NSGraphicsContext saveGraphicsState];
@@ -62,6 +70,17 @@
   return YES;
 }
 
+- (void)setHighlight:(BOOL)highlight {
+  if(highlight) {
+    DLog(@"Setting color to yellow for %@",owner.boxID);
+    [self setColor:[NSColor yellowColor]];
+  } else {
+    DLog(@"Setting color to black for %@",owner.boxID);
+    [self setColor:[NSColor blackColor]];
+  }
+  [self setNeedsDisplay:YES];
+}
+    
 #pragma mark Keyboard Events
 - (void)keyDown:(NSEvent *)theEvent
 {
@@ -260,4 +279,5 @@
   [self setNeedsDisplay:YES];
   [owner updateFrame];
 }
+
 @end

@@ -6,24 +6,38 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #import "TNKlipboxAnalysis.h"
+#import "TNKlipboxDocument.h"
 #import "TNKlipboxProgressIndicator.h"
 
 @implementation TNKlipboxAnalysis
 
+@synthesize myDocument;
 @synthesize results;
+@synthesize myReportWindow;
 @synthesize myReportView;
+@synthesize selection;
 
 #pragma mark Housekeeping
 - (void)dealloc {
   DLog(@"... deallocating");
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [results release];results=nil;
+  [selection release];selection=nil;
   [super dealloc];
 }
 
-- (id)init {
+- (id)initForDocument: (TNKlipboxDocument *)aDoc {
   if(self=[super init]) {
+    // initialize vars
+    myDocument = aDoc;
     results = [[NSMutableArray alloc] init];
+    selection = [[NSIndexSet alloc] init];
+    // load the nib bundle
     [NSBundle loadNibNamed:TNKlipboxAnalysisNibKey owner:self];
+    // register for window closing notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:myReportWindow];
+    // make report window key
+    [myReportWindow makeKeyAndOrderFront:self];
     return self;
   }
   ELog(@"Could not initialize analysis object / nib");
@@ -42,21 +56,37 @@
   [self groupImages];
   [self colorCodeResults];
   [myReportView reloadData];
+  [self setSelection:[myReportView selectedRowIndexes]];
   [myReportView setNeedsDisplay:YES];
 }
 
 #pragma mark NSTableViewDataSource Protocol
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
-  DLog(@"Telling %@ that numRows == %d",aTableView,[results count]);
   return [results count];
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-  DLog(@"%@ is asking for an object value",aTableView);
   NSDictionary *rec = (NSDictionary *)[results objectAtIndex:rowIndex];
-  DLog(@"I am returning %@",[rec objectForKey:[aTableColumn identifier]]);
   return [rec objectForKey:[aTableColumn identifier]];
+}
+
+- (void)setSelection:(NSIndexSet *)new {
+  if(new!=selection) {
+    [selection release];selection=nil;
+    selection = [new retain];
+    // delete old highlights
+    [myDocument highlightKlipbox:nil];
+    // highlight all boxes matching selection
+    NSUInteger index=[selection firstIndex];
+    while(index != NSNotFound) {
+      // highlight the box
+      TNKlipboxBox *box = [[results objectAtIndex:index] objectForKey:TNKlipboxAnalysisPtrKey];
+      [myDocument highlightKlipbox:box];
+      // next index
+      index=[selection indexGreaterThanIndex: index];
+    }
+  }
 }
 
 #pragma mark @Private
@@ -107,11 +137,18 @@
   [desc release];desc=nil;
 }
 
+- (void)windowWillClose:(NSNotification *)aNote {
+  DLog(@"Window will close notification");
+  // de-highlight all klipboxes
+  [myDocument highlightKlipbox:nil];
+}
+
 #pragma mark Keys
 NSString * const TNKlipboxAnalysisBoxIDKey = @"id";
 NSString * const TNKlipboxAnalysisLatencyKey = @"latency";
 NSString * const TNKlipboxAnalysisImgDataKey = @"data";
 NSString * const TNKlipboxAnalysisImgGroupKey = @"group";
+NSString * const TNKlipboxAnalysisPtrKey = @"ptr";
 NSString * const TNKlipboxAnalysisNibKey = @"TNKlipboxReport";
 
 @end

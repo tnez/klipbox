@@ -17,7 +17,7 @@
   NSMutableArray *klipboxes;         // array of klipboxes in the given document
   NSString *fileURL;                 // URL of file (used to save)
   IBOutlet NSWindow *domainWindow;   // main document window
-  NSMutableArray *saveBox;           // box to put every object which we want to save
+  NSMutableArray *selectedBoxes;     // stack of selected boxes to allow for multiple selections
   BOOL isRunning;
 }
 @property (readonly) NSMutableArray *klipboxes;
@@ -31,6 +31,7 @@
 #pragma mark Document Editing
 - (void)makeNewKlipboxWithRect:(NSRect)aRect;
 - (void)recordNewWindowSize: (NSNotification *)aNote;
+- (void)highlightKlipbox:(TNKlipboxBox *)aBox; // if nil, unhighlight all boxes
 - (void)selectNextKlipboxUsingCurrentKlipbox:(TNKlipboxBox *)currentBox;
 
 #pragma mark Document Reading
